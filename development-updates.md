@@ -8,13 +8,16 @@ Add your name **alphabetically** and link your updates to the corresponding tabl
 
 Phase one is the very beginning of the cohort. The first few weeks are dedicated to general learning about the EPF program, the Ethereum protocol as a whole and its development. Use resources from [EPF Study group](https://epf.wiki) to get started and make yourself familiar with various areas of Ethereum.
 
-| Name/GH                                    | Week 0                                                                                              | Week 1 | Week 2 |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------- | ------ | ------ |
-| [Bankat](https://github.com/mananuf/)      | [Update 0](https://hackmd.io/@manbankat/ryn-CDrbfx)                                                 |        |        |
-| [Conall](https://github.com/XRS-001/)      | [ Update 0](https://docs.fileverse.io/d/02001110001b#k=0YDBXHva0sJIlCC108YBhFhNP_4PFWtxqoGaQOqcFhM) |        |        |
-| [Mario](https://github.com/taxmeifyoucan/) | [ Update 0](https://notes.ethereum.org/@MarioHavel/week0)                                           |        |        |
-| [Rahul](https://github.com/rahulbarmann/)  | [Update 0](https://hackmd.io/@8t0zzURJSC6IX5BOuOiGqQ/Sk0vwhHZfg)                                    |        |        |
-| [Sagar](https://www.github.com/SoarinSkySagar) | [Update 0](https://hackmd.io/@5d9IS104QYmhm-pr1ypNJg/Bk3xoWQbGg)                                |        |        |
+
+| Name/GH                                        | Week 0                                                                                              | Week 1 | Week 2 |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------ | ------ |
+| [Ayush](https://github.com/0xAysh/)            | [ Update 0](https://hackmd.io/@0xAysh/EPF7-week-0-update)                                           |        |        |
+| [Bankat](https://github.com/mananuf/)          | [Update 0](https://hackmd.io/@manbankat/ryn-CDrbfx)                                                 |        |        |
+| [Conall](https://github.com/XRS-001/)          | [ Update 0](https://docs.fileverse.io/d/02001110001b#k=0YDBXHva0sJIlCC108YBhFhNP_4PFWtxqoGaQOqcFhM) |        |        |
+| [Mario](https://github.com/taxmeifyoucan/)     | [ Update 0](https://notes.ethereum.org/@MarioHavel/week0)                                           |        |        |
+| [Rahul](https://github.com/rahulbarmann/)      | [Update 0](https://hackmd.io/@8t0zzURJSC6IX5BOuOiGqQ/Sk0vwhHZfg)                                    |        |        |
+| [Sagar](https://www.github.com/SoarinSkySagar) | [Update 0](https://hackmd.io/@5d9IS104QYmhm-pr1ypNJg/Bk3xoWQbGg)                                    |        |        |
+
 
 
 

@@ -33,6 +33,7 @@ Phase one is the very beginning of the cohort. The first few weeks are dedicated
 | [Mohit](https://github.com/groverInnovate)      | [Update 0](https://hackmd.io/@groverInnovate/EPF7_Week0)                                            |        |        |
 | [Parth](https://github.com/ParthSinghPS)        | [Update 0](https://hackmd.io/@ParthSinghPS/HJMWUn6xzg)                                              |        |        |
 | [Rahul](https://github.com/rahulbarmann/)       | [Update 0](https://hackmd.io/@8t0zzURJSC6IX5BOuOiGqQ/Sk0vwhHZfg)                                    |        |        |
+| [Raphina](https://github.com/stamp9/)       | [Update 0](https://hackmd.io/NN9diNPZQiyzHi-HyaZWjg)                                    |        |        |
 | [Richard](https://github.com/richardgreg)      | [Update 0](https://richardgreg.github.io/ethereum-protocol-fellowship/2026/06/10/week-0.html)        |        |        |
 | [Roheemah](https://github.com/AbolareRoheemah)      |        | [Update 1](https://hackmd.io/@rhorheeymarh/HJuU07XGfl)       |        |
 | [Sagar](https://www.github.com/SoarinSkySagar)  | [Update 0](https://hackmd.io/@5d9IS104QYmhm-pr1ypNJg/Bk3xoWQbGg)                                    |    [Update 1](https://hackmd.io/@5d9IS104QYmhm-pr1ypNJg/rywA-N4Mzx)    |        |

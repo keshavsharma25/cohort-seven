@@ -63,7 +63,8 @@ def main(pr_number):
     auth_remote = f"https://x-access-token:{TOKEN}@github.com/{head_repo}.git"
 
     run(["git", "fetch", "origin", base_branch], check=True)
-    run(["git", "remote", "remove", "prhead"], check=False)
+    subprocess.run(["git", "remote", "remove", "prhead"],
+                   capture_output=True, text=True)  # ignore if absent
     run(["git", "remote", "add", "prhead", auth_remote], check=True)
     # Fetch the branch tip into a stable local ref so git show always resolves.
     run(["git", "fetch", "prhead", f"{head_branch}:_prhead"], check=True)
@@ -105,51 +106,48 @@ def main(pr_number):
             "`python3 scripts/dev_updates.py format development-updates.md` locally."
         )
 
-    # This automation only handles PRs that change development-updates.md alone.
-    # Flag a genuine other-file change only when the PR head has a non-empty
-    # version of another file that differs from the base tip (a real edit/add).
-    # Missing/deleted files are ignored because the rebuild restores them from
-    # base anyway -- so an earlier bad sync that dropped files doesn't block us.
-    others = []
-    for f in files:
-        name = f["filename"]
-        if name == FILE:
-            continue
-        head_ver = git_show(f"{head_ref}:{name}")
-        if head_ver and head_ver != git_show(f"{main_ref}:{name}"):
-            others.append(name)
-    if others:
-        return fail(
-            "This PR changes files other than development-updates.md "
-            + "(" + ", ".join(others) + "); not auto-syncing."
-        )
-
-    # Build the result tree from the BASE branch's tree, replacing only the
-    # table with our semantic merge. This guarantees no other file on the base
-    # branch is ever touched or dropped -- even if the PR branch forked from an
-    # old base or a previous run left it in a bad state. Parents are the PR head
-    # and the base tip, so merging the PR back into base is conflict-free.
-    parent_pr = run(["git", "rev-parse", head_ref], capture=True)
-    parent_base = run(["git", "rev-parse", main_ref], capture=True)
+    # Already in sync? If the base tip is an ancestor of the PR head and the
+    # table already equals the merge result, there is nothing to do.
     base_is_ancestor = subprocess.run(
         ["git", "merge-base", "--is-ancestor", main_ref, head_ref]
     ).returncode == 0
-
-    if merged == theirs_content and base_is_ancestor:
+    if base_is_ancestor and merged == ours_content:
         print(f"PR #{pr_number}: already in sync with {base_branch}; mergeable.")
         return 0
 
-    run(["git", "read-tree", main_ref], check=True)
-    blob = subprocess.run(["git", "hash-object", "-w", "--stdin"],
-                          input=merged, text=True, capture_output=True, check=True).stdout.strip()
-    run(["git", "update-index", "--cacheinfo", "100644", blob, FILE], check=True)
-    tree = run(["git", "write-tree"], capture=True)
-    commit = run(
-        ["git", "commit-tree", tree, "-p", parent_pr, "-p", parent_base,
-         "-m", "Merge base branch into PR and sync development-updates.md"],
-        capture=True,
+    # Do a real git merge of the base branch into the PR branch. Git merges every
+    # file normally (so files added on the base branch -- e.g. workflows -- are
+    # left exactly as they are and never appear in our commit's diff), and we only
+    # step in to resolve development-updates.md with the semantic merge. The result
+    # is a proper merge commit, so merging the PR back into the base is clean.
+    run(["git", "checkout", "-q", "-B", "_autofix", head_ref], check=True)
+    merge_rc = subprocess.run(
+        ["git", "merge", "--no-commit", "--no-ff", main_ref],
+        text=True, capture_output=True,
     )
-    run(["git", "push", "prhead", f"{commit}:{head_branch}"], check=True)
+    print(merge_rc.stdout)
+    if merge_rc.stderr:
+        print(merge_rc.stderr, file=sys.stderr)
+
+    # Any conflict outside the table means a real, non-table change clashes ->
+    # leave it for a human.
+    conflicted = run(["git", "diff", "--name-only", "--diff-filter=U"], capture=True).split()
+    others = [f for f in conflicted if f != FILE]
+    if others:
+        run(["git", "merge", "--abort"], check=False)
+        return fail(
+            "Merge conflicts outside development-updates.md ("
+            + ", ".join(others) + "); not auto-syncing."
+        )
+
+    # Write the semantic merge of the table over whatever git produced and stage.
+    with open(FILE, "w") as fh:
+        fh.write(merged)
+    run(["git", "add", FILE], check=True)
+
+    run(["git", "commit", "--no-edit",
+         "-m", "Merge base branch into PR and sync development-updates.md"], check=True)
+    run(["git", "push", "prhead", f"_autofix:{head_branch}"], check=True)
     print(f"PR #{pr_number}: synced and pushed to {head_repo}:{head_branch}.")
     return 0
 

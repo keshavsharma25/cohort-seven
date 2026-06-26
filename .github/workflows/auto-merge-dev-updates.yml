@@ -2,13 +2,12 @@
 name: dev-updates mergeable
 
 on:
-  pull_request_target:
-    types: [opened, synchronize, reopened]
-    paths: ['development-updates.md']
+  pull_request_review:
+    types: [submitted]
   workflow_dispatch:
     inputs:
       pr:
-        description: 'PR number to sync (use this for older PRs)'
+        description: 'PR number to sync'
         required: true
         type: string
 
@@ -22,13 +21,13 @@ concurrency:
 
 jobs:
   resolve:
+    # Manual run, or when a review is submitted with state "approved".
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.review.state == 'approved' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout base branch scripts (from base repo, never PR code)
         uses: actions/checkout@v4
         with:
-          # On a PR event use its base branch; on manual dispatch this is empty
-          # so checkout falls back to the repo default branch (where scripts live).
           ref: ${{ github.event.pull_request.base.ref || github.event.repository.default_branch }}
           fetch-depth: 0
           persist-credentials: true
